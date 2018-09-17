@@ -26,6 +26,9 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
             // This will run when the network request returns
             if let error = error {
                 print(error.localizedDescription)
+                let alertController = UIAlertController(title: "Network Error", message: "The Internet connection seems to be offline", preferredStyle: .alert)
+                let cancel = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+                alertController.addAction(cancel)
             } else if let data = data {
                 let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
                 // TODO: Get the array of movies

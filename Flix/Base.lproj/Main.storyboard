@@ -57,18 +57,21 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="vCv-vx-hDP">
-                                <rect key="frame" x="169" y="315" width="37" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="vCv-vx-hDP">
+                                <rect key="frame" x="0.0" y="315" width="375" height="37"/>
                                 <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="vCv-vx-hDP" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="8HD-1z-5Ty"/>
+                            <constraint firstItem="vCv-vx-hDP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="D9H-i0-LRU"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="yPL-jt-LMR" secondAttribute="bottom" id="gcW-xT-W2w"/>
                             <constraint firstItem="yPL-jt-LMR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="hqs-UG-vsW"/>
+                            <constraint firstItem="vCv-vx-hDP" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="295" id="jpN-wV-0x8"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yPL-jt-LMR" secondAttribute="trailing" id="jzs-PS-kdn"/>
                             <constraint firstItem="yPL-jt-LMR" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="reC-ug-n4K"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="vCv-vx-hDP" secondAttribute="bottom" constant="315" id="vOk-hg-wbD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
