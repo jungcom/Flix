@@ -10,6 +10,16 @@ import UIKit
 
 class MovieCell: UITableViewCell {
 
+    var movie:Movie? {
+        willSet(movie) {
+            titleLabel.text = movie?.title
+            overviewLabel.text = movie?.overview
+            if let poster = movie?.posterUrl{
+                movieImageView.af_setImage(withURL: poster)
+            }
+        }
+    }
+    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var overviewLabel: UILabel!
     @IBOutlet weak var movieImageView: UIImageView!
@@ -17,12 +27,6 @@ class MovieCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
 }

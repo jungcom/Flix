@@ -16,7 +16,7 @@ enum Keys{
 }
 
 class DetailViewController: UIViewController {
-    var movie : [String:Any]?
+    var movie : Movie?
     @IBOutlet weak var backDropImageView: UIImageView!
     
     @IBOutlet weak var releaseDateLabel: UILabel!
@@ -29,19 +29,15 @@ class DetailViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         if let movie = movie{
-            titleLabel.text = movie["title"] as? String
-            releaseDateLabel.text = movie["release_date"] as? String
-            overviewLabel.text = movie["overview"] as? String
-            let backdropString = movie[Keys.backdropPath] as! String
-            let posterString = movie[Keys.posterPath] as! String
-            let baseURL = Keys.baseURL
-            
-            let backdropURL = URL(string: baseURL + backdropString)!
-            backDropImageView.af_setImage(withURL: backdropURL)
-            
-            let posterURL = URL(string: baseURL + posterString)!
-            posterImageView.af_setImage(withURL: posterURL)
-
+            titleLabel.text = movie.title
+            releaseDateLabel.text = movie.releaseDate
+            overviewLabel.text = movie.overview
+            if let backdropURL = movie.backdropURL{
+                backDropImageView.af_setImage(withURL: backdropURL)
+            }
+            if let posterUrl = movie.posterUrl{
+                posterImageView.af_setImage(withURL: posterUrl)
+            }
         }
     }
 

@@ -9,7 +9,7 @@
 import UIKit
 
 class SuperHeroViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
-    var movies : [[String : Any]] = []
+    var movies : [Movie] = []
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func viewDidLoad() {
@@ -39,10 +39,8 @@ class SuperHeroViewController: UIViewController, UICollectionViewDelegate, UICol
                 alertController.addAction(cancel)
             } else if let data = data {
                 let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-                // TODO: Get the array of movies
-                let movies = dataDictionary["results"] as! [[String:Any]]
-                // TODO: Store the movies in a property to use elsewhere
-                self.movies = movies
+                let movieDictionaries = dataDictionary["results"] as! [[String: Any]]
+                self.movies = Movie.movies(dictionaries: movieDictionaries)
                 
                 // TODO: Reload your table view data
                 self.collectionView.reloadData()
@@ -60,9 +58,7 @@ class SuperHeroViewController: UIViewController, UICollectionViewDelegate, UICol
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "posterCell", for: indexPath) as? CollectionViewCell
         let movie = movies[indexPath.item]
-        if let posterPathString = movie["poster_path"] as? String{
-            let baseURLString = "https://image.tmdb.org/t/p/w500"
-            let posterURL = URL(string: baseURLString + posterPathString)!
+        if let posterURL = movie.posterUrl{
             cell?.posterImageView.af_setImage(withURL: posterURL)
         }
         return cell!

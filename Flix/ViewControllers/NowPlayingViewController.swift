@@ -13,13 +13,13 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableView: UITableView!
-    var movies : [[String : Any]] = []
+    var movies : [Movie] = []
     var refreshControl: UIRefreshControl!
     
-    func fetchMovies() {
+    func fetchPopularMovies() {
         activityIndicator.startAnimating()
         // Do any additional setup after loading the view.
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed")!
+        let url = URL(string: "https://api.themoviedb.org/3/movie/popular?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         let task = session.dataTask(with: request) { (data, response, error) in
@@ -32,9 +32,9 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
             } else if let data = data {
                 let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
                 // TODO: Get the array of movies
-                let movies = dataDictionary["results"] as! [[String:Any]]
-                // TODO: Store the movies in a property to use elsewhere
-                self.movies = movies
+                let movieDictionaries = dataDictionary["results"] as! [[String: Any]]
+                
+                self.movies = Movie.movies(dictionaries: movieDictionaries)
                 
                 // TODO: Reload your table view data
                 self.tableView.reloadData()
@@ -57,7 +57,12 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
         refreshControl.addTarget(self, action: #selector(NowPlayingViewController.didPull(_:)), for: .valueChanged)
         self.tableView.insertSubview(refreshControl, at:0)
         
-        fetchMovies()
+        MovieAPIClient().nowPlayingMovies { (movies: [Movie]?, error: Error?) in
+            if let movies = movies {
+                self.movies = movies
+                self.tableView.reloadData()
+            }
+        }
     }
     
     
@@ -78,7 +83,7 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
  
     
     @objc func didPull(_ refreshControl:UIRefreshControl){
-        fetchMovies()
+        fetchPopularMovies()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -87,19 +92,8 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
-        //Put data to cell
-        let movie = movies[indexPath.row]
-        let title = movie["title"] as! String
-        cell.titleLabel.text = title
         
-        let overview = movie["overview"] as! String
-        cell.overviewLabel.text = overview
-        
-        let posterPath = movie["poster_path"] as! String
-        let baseUrl = "https://image.tmdb.org/t/p/w500"
-        let posterUrl = URL(string: baseUrl + posterPath)!
-        cell.movieImageView.af_setImage(withURL: posterUrl)
-        
+        cell.movie = movies[indexPath.row]
         
         return cell
     }
